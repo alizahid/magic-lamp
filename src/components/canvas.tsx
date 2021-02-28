@@ -1,4 +1,4 @@
-import { createElement, FunctionComponent, useRef } from 'react'
+import { createElement, FunctionComponent, ReactNode } from 'react'
 
 import { Component, Doc } from '../types'
 
@@ -9,25 +9,18 @@ type Props = {
 }
 
 export const Canvas: FunctionComponent<Props> = ({ onChange, doc }) => {
-  const index = useRef(1)
-
   const { height, width, components } = doc
 
-  const render = (component: Component) => {
-    if (component.components) {
-      return render(component)
-    }
-
-    const { props, tag } = component
-
-    return createElement(tag, {
-      ...props,
-      key: index.current++
-    })
-  }
+  const render = ({ props, type, children }: Component): ReactNode =>
+    createElement(
+      type,
+      props,
+      Array.isArray(children) ? children.map((node) => render(node)) : children
+    )
 
   return (
     <div
+      id="canvas"
       style={{
         height,
         width

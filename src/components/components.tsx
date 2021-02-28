@@ -1,7 +1,10 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
+import html2canvas from 'html2canvas'
+
 import { Doc } from '../types'
 import { Header } from './header'
 import { Icon } from './icon'
+import { nanoid } from 'nanoid'
 
 type Props = {
   doc: Doc
@@ -10,6 +13,8 @@ type Props = {
 }
 
 export const Components: FunctionComponent<Props> = ({ doc, onChange }) => {
+  const [exporting, setExporting] = useState(false)
+
   const layouts = [
     {
       height: 600,
@@ -83,8 +88,29 @@ export const Components: FunctionComponent<Props> = ({ doc, onChange }) => {
           </button>
         ))}
 
-        <button className="mt-6 mb-2 px-3 py-2 font-medium w-full">
-          Export
+        <button
+          disabled={exporting}
+          onClick={async () => {
+            setExporting(true)
+
+            try {
+              const canvas = await html2canvas(
+                document.getElementById('canvas')
+              )
+
+              const link = document.createElement('a')
+
+              link.href = canvas.toDataURL('png', 1)
+              link.download = `${nanoid()}.png`
+              link.click()
+
+              link.remove()
+            } finally {
+              setExporting(false)
+            }
+          }}
+          className="mt-6 mb-2 px-3 py-2 font-medium w-full">
+          {exporting ? 'Exporting' : 'Export'}
         </button>
       </div>
     </aside>

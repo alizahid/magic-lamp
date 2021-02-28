@@ -3,16 +3,15 @@ import { ReactNode } from 'react'
 export type Doc = {
   height: number
   width: number
-
   components: Component[]
 }
 
 export type Component = {
-  tag: 'div' | 'img'
+  type: string
+  children?: string | Component[]
   props: {
+    key: string
     className?: string
     src?: string
-    children?: ReactNode
   }
-  components?: Component[]
 }

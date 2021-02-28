@@ -1,8 +1,9 @@
 import Head from 'next/head'
 import { FunctionComponent, useState } from 'react'
 
-import { Canvas, Components, Header, Inspector } from '../components'
-import { Component, Doc } from '../types'
+import { Canvas, Components, Inspector } from '../components'
+import { nanoid } from '../lib'
+import { Doc } from '../types'
 
 const Home: FunctionComponent = () => {
   const [doc, setDoc] = useState<Doc>({
@@ -10,15 +11,43 @@ const Home: FunctionComponent = () => {
     width: 600,
     components: [
       {
-        tag: 'div',
+        type: 'div',
         props: {
-          className: 'absolute h-full w-full top-0 left-0'
-        }
+          key: nanoid(),
+          className:
+            'bg-gradient-to-br from-amber-200 to-amber-300 absolute flex flex-col items-center justify-center h-full w-full top-0 left-0'
+        },
+        children: [
+          {
+            type: 'img',
+            props: {
+              key: nanoid(),
+              className: 'h-32 w-32 bg-white rounded-full shadow',
+              src: 'https://alizahid.dev/ali-zahid.jpg'
+            }
+          },
+          {
+            type: 'div',
+            children: 'Ali Zahid',
+            props: {
+              key: nanoid(),
+              className: 'text-4xl font-semibold mt-4'
+            }
+          },
+          {
+            type: 'div',
+            children: 'hi@alizahid.dev',
+            props: {
+              key: nanoid(),
+              className: 'text-sm mt-2'
+            }
+          }
+        ]
       }
     ]
   })
 
-  const [component, setComponent] = useState<Component>()
+  const [key, setKey] = useState<string>()
 
   return (
     <>
