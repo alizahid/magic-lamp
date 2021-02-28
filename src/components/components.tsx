@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent } from 'react'
 import { Doc } from '../types'
 import { Header } from './header'
 import { Icon } from './icon'
@@ -10,8 +10,6 @@ type Props = {
 }
 
 export const Components: FunctionComponent<Props> = ({ doc, onChange }) => {
-  const [visible, setVisible] = useState(true)
-
   const layouts = [
     {
       height: 600,
