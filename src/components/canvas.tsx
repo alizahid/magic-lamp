@@ -1,4 +1,4 @@
-import { createElement, FunctionComponent } from 'react'
+import { createElement, FunctionComponent, useRef } from 'react'
 
 import { Component, Doc } from '../types'
 
@@ -9,6 +9,8 @@ type Props = {
 }
 
 export const Canvas: FunctionComponent<Props> = ({ onChange, doc }) => {
+  const index = useRef(1)
+
   const { height, width, components } = doc
 
   const render = (component: Component) => {
@@ -18,7 +20,10 @@ export const Canvas: FunctionComponent<Props> = ({ onChange, doc }) => {
 
     const { props, tag } = component
 
-    return createElement(tag, props)
+    return createElement(tag, {
+      ...props,
+      key: index.current++
+    })
   }
 
   return (
@@ -27,7 +32,7 @@ export const Canvas: FunctionComponent<Props> = ({ onChange, doc }) => {
         height,
         width
       }}
-      className="bg-white shadow relative">
+      className="bg-white text-base leading-normal shadow relative">
       {components.map((component) => render(component))}
     </div>
   )
